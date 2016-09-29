@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+	<title>Home</title>
+
+	{% load staticfiles %}
+
+	<link rel="stylesheet" href="{% static 'home/css/home.css' %}" >
+
+</head>
+
+<body>
+
+	<div id="container">
+
+		<div id="login_register">
+
+			{% if "user_id" in request.session %}
+		
+				Welcome {{name}} <a href="{% url 'login_registration:logout' %}">Logout</a>
+
+			{% endif %}
+
+		</div>
+		<div class="box">
+
+			<form action="{% url 'home:add_quote' %}" method="POST">
+			{% csrf_token %}
+				<h1>Contribute A Quote</h1>
+					<h3>
+						{% if messages %}
+							<ul class="messages">
+    							{% for message in messages %}
+    								<p{% if message.tags %} class="{{ message.tags }}"{% endif %}>*{{ message }}</p>
+    							{% endfor %}
+							</ul>
+						{% endif %}
+					</h3>
+					<p>
+						<input type="text" name="author" placeholder="Quote Author">
+					</p>
+					<p>
+						<textarea type="text" name="quote" placeholder="Quote Text"></textarea>
+					</p>
+
+					<button type="submit">Submit</button>
+			</form>
+		</div>
+		<div>
+			<h2>Quotable Quotes</h2>
+			{% for i in quote_post %}
+				<p>
+					<b>{{i.author}}</b>
+					{{i.quote}}
+					Posted by: <a href="{% url 'home:users' i.id %}">{{i.FK_Users.name}}</a>
+				</p>
+				<form action="{% url 'home:add_favorites' %}">
+					<p>
+						<button type="submit">Add to Favorites</button>
+					</p>
+				</form>
+			{% endfor %}	
+			<h2>Favorites</h2>
+			{% for i in favorite %}
+				{{i.author}}
+				{{i.quote}}
+			{% endfor %}
+		</div>
+	</div>
+
+
+</body>
+
+</html>

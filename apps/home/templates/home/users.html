@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+	<title>Users</title>
+
+	{% load staticfiles %}
+
+	<link rel="stylesheet" href="{% static 'home/css/home.css' %}" >
+
+</head>
+
+<body>
+
+	<div id="container">
+		<h3><a href="{% url 'home:home' %}">Back</a></h3>
+
+		<div id="login_register">
+
+			{% if "user_id" in request.session %}
+		
+				Welcome {{name}} <a href="{% url 'login_registration:logout' %}">Logout</a>
+
+			{% endif %}
+
+		</div>
+		<div>
+			<p>
+				{% for i in user_post %}
+					Posts By: {{i.FK_Users.name}}
+				{% endfor %}
+			</p>
+			Count: 1
+			{% for i in user_post %}
+				<p>
+					<b>{{i.author}}</b>
+					{{i.quote}}
+					Posted by: {{i.FK_Users.name}}</a>
+				</p>
+			{% endfor %}
+		</div>
+	</div>
+
+
+</body>
+
+</html>
